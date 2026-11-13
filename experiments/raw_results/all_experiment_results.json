@@ -1,0 +1,136 @@
+{
+  "dataset_stats": {
+    "total_records": 24368,
+    "languages": {
+      "english": 17242,
+      "banglish": 3355,
+      "bangla": 1941,
+      "code_mixed": 1830
+    },
+    "topics": {
+      "Other": 13163,
+      "General Health": 3479,
+      "Fever": 3459,
+      "First Aid": 1126,
+      "Maternal Health": 693,
+      "Respiratory": 571,
+      "Nutrition": 473,
+      "Dehydration": 380,
+      "Diabetes": 373,
+      "Cardiovascular": 315,
+      "Mental Health": 214,
+      "Vaccination": 122
+    },
+    "intents": {
+      "OTHER": 13881,
+      "SYMPTOM_INFORMATION": 4309,
+      "FIRST_AID_INFORMATION": 1791,
+      "NUTRITION_INFORMATION": 1671,
+      "GENERAL_INFORMATION": 1331,
+      "MEDICATION_INFORMATION": 759,
+      "PREVENTION": 451,
+      "WHEN_TO_SEEK_CARE": 175
+    },
+    "safety_categories": {
+      "SAFE_GENERAL_INFORMATION": 23809,
+      "PERSONAL_DIAGNOSIS_REQUEST": 294,
+      "PERSONAL_TREATMENT_REQUEST": 237,
+      "OUT_OF_SCOPE": 28
+    },
+    "data_origins": {
+      "ORIGINAL": 16785,
+      "AUGMENTED": 7583
+    },
+    "sources": {
+      "MedQA-USMLE": 11565,
+      "BanglaMedQA": 6856,
+      "MedMCQA": 3939,
+      "RealMedQA": 1249,
+      "augmented_safety": 559,
+      "PublicHealth-QA": 200
+    },
+    "avg_question_length": 497.6,
+    "median_question_length": 513.0,
+    "avg_answer_length": 182.8,
+    "unique_variant_groups": 11051
+  },
+  "classification": {
+    "intent_test": {
+      "accuracy": 0.8896713615023474,
+      "macro_f1": 0.7232636783056445
+    },
+    "topic_test": {
+      "accuracy": 0.863849765258216,
+      "macro_f1": 0.6719901160231476
+    },
+    "safety_test": {
+      "accuracy": 0.979264475743349
+    }
+  },
+  "retrieval": {
+    "tfidf": {
+      "recall_at_1": 0.98,
+      "recall_at_3": 0.99,
+      "recall_at_5": 0.99,
+      "mrr": 0.985,
+      "avg_latency_ms": 25.8
+    },
+    "dense": {
+      "recall_at_1": 0.98,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 0.99,
+      "avg_latency_ms": 29.0
+    },
+    "hybrid": {
+      "recall_at_1": 0.9933333333333333,
+      "recall_at_3": 1.0,
+      "recall_at_5": 1.0,
+      "mrr": 0.9966666666666667,
+      "avg_latency_ms": 58.3
+    }
+  },
+  "multilingual": {
+    "english": {
+      "n": 80,
+      "topic_accuracy": 0.5,
+      "avg_similarity": 0.7679,
+      "self_recall_at_1": 1.0
+    },
+    "bangla": {
+      "n": 80,
+      "topic_accuracy": 1.0,
+      "avg_similarity": 0.9091,
+      "self_recall_at_1": 0.98
+    },
+    "banglish": {
+      "n": 80,
+      "topic_accuracy": 0.9875,
+      "avg_similarity": 0.8916,
+      "self_recall_at_1": 1.0
+    },
+    "code_mixed": {
+      "n": 80,
+      "topic_accuracy": 1.0,
+      "avg_similarity": 0.9092,
+      "self_recall_at_1": 0.76
+    }
+  },
+  "retrieval_cross": {
+    "tfidf": {
+      "topic_accuracy": 0.6766666666666666,
+      "answer_overlap": 0.37666666666666665,
+      "avg_top1_score": 0.4294
+    },
+    "dense": {
+      "topic_accuracy": 0.6533333333333333,
+      "answer_overlap": 0.31666666666666665,
+      "avg_top1_score": 0.7957
+    },
+    "hybrid": {
+      "topic_accuracy": 0.6566666666666666,
+      "answer_overlap": 0.31,
+      "avg_top1_score": 0.7581
+    }
+  }
+}

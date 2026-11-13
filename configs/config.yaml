@@ -1,0 +1,176 @@
+# MediRAG-BD Configuration
+# All configurable parameters in one place
+
+project:
+  name: "MediRAG-BD"
+  version: "1.0.0"
+  description: "Multilingual Bangla-English-Banglish Medical QA and Semantic Retrieval System"
+  random_seed: 42
+
+paths:
+  raw_data_dir: "data/raw"
+  interim_data_dir: "data/interim"
+  processed_data_dir: "data/processed"
+  splits_dir: "data/splits"
+  indexes_dir: "data/indexes"
+  models_dir: "models"
+  experiments_dir: "experiments"
+  figures_dir: "experiments/figures"
+  tables_dir: "experiments/tables"
+
+data:
+  raw_files:
+    primary: "1mediqa_bd_dataset.csv"
+    secondary: "mediqa_bd_dataset.csv"
+  normalized_file: "mediqa_bd_normalized.csv"
+  processed_file: "mediqa_bd_processed.csv"
+  augmented_file: "mediqa_bd_augmented.csv"
+  final_file: "mediqa_bd_final.csv"
+  encoding: "utf-8"
+
+schema:
+  required_fields:
+    - question_id
+    - variant_group_id
+    - question
+    - language
+    - topic
+    - intent
+    - safety_category
+    - answer
+    - data_origin
+  optional_fields:
+    - question_type
+    - answer_type
+    - evidence_text
+    - evidence_id
+    - document_id
+    - section
+    - source
+    - subject
+    - difficulty
+    - annotation_status
+
+languages:
+  supported:
+    - english
+    - bangla
+    - banglish
+    - code_mixed
+
+topics:
+  - General Health
+  - Fever
+  - First Aid
+  - Respiratory
+  - Maternal Health
+  - Nutrition
+  - Diabetes
+  - Cardiovascular
+  - Dehydration
+  - Mental Health
+  - Vaccination
+  - Other
+
+intents:
+  - GENERAL_INFORMATION
+  - SYMPTOM_INFORMATION
+  - FIRST_AID_INFORMATION
+  - NUTRITION_INFORMATION
+  - MEDICATION_INFORMATION
+  - PREVENTION
+  - WHEN_TO_SEEK_CARE
+  - OTHER
+
+safety_categories:
+  - SAFE_GENERAL_INFORMATION
+  - PERSONAL_DIAGNOSIS_REQUEST
+  - PERSONAL_TREATMENT_REQUEST
+  - OUT_OF_SCOPE
+
+data_origins:
+  - ORIGINAL
+  - MANUAL
+  - AUGMENTED
+  - REVIEWED
+
+preprocessing:
+  unicode_normalize: true
+  normalize_whitespace: true
+  remove_noise: true
+  preserve_bangla_chars: true
+  preserve_medical_terms: true
+  min_question_length: 5
+  max_question_length: 5000
+
+augmentation:
+  target_total_records: 10000
+  languages_to_generate:
+    - banglish
+    - code_mixed
+  banglish_variants_per_bangla: 2
+  code_mixed_variants_per_group: 1
+  safety_examples_per_category: 200
+  validate_generated: true
+  remove_duplicates: true
+
+splitting:
+  train_ratio: 0.80
+  validation_ratio: 0.10
+  test_ratio: 0.10
+  group_column: "variant_group_id"
+  stratify_column: "topic"
+
+classification:
+  models:
+    - name: "tfidf_lr"
+      vectorizer: "tfidf"
+      classifier: "logistic_regression"
+      max_features: 10000
+      ngram_range: [1, 2]
+    - name: "tfidf_svm"
+      vectorizer: "tfidf"
+      classifier: "svm"
+      max_features: 10000
+      ngram_range: [1, 2]
+  tasks:
+    - intent
+    - topic
+    - safety
+
+embeddings:
+  model_name: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+  batch_size: 64
+  normalize: true
+  dimension: 384
+
+retrieval:
+  tfidf:
+    max_features: 20000
+    ngram_range: [1, 2]
+    top_k: 10
+  dense:
+    top_k: 10
+    nprobe: 10
+  hybrid:
+    alpha: 0.7  # weight for semantic score
+    top_k: 10
+  relevance_threshold: 0.35
+  low_similarity_message: "No sufficiently relevant answer was found in the current medical knowledge dataset."
+
+safety:
+  unsafe_response_diagnosis: "This system provides general health information and cannot determine a personal diagnosis. Please consult a qualified healthcare professional."
+  unsafe_response_treatment: "This system provides general health information and cannot recommend personal treatment plans. Please consult a qualified healthcare professional."
+  out_of_scope_response: "This question falls outside the scope of the medical information available in this system."
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:5173"
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  log_file: "medirag_bd.log"

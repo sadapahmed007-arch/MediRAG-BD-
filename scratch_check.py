@@ -1,0 +1,13 @@
+import sys; sys.stdout.reconfigure(encoding='utf-8')
+import pandas as pd
+df = pd.read_csv('data/interim/mediqa_bd_normalized.csv', encoding='utf-8')
+print(f"Normalized dataset: {len(df)} rows, {len(df.columns)} cols")
+print(f"Columns: {list(df.columns)}")
+print("Languages:", df["language"].value_counts().to_dict())
+print("Data origins:", df["data_origin"].value_counts().to_dict() if "data_origin" in df.columns else "MISSING")
+print("Answer types:", df["answer_type"].value_counts().to_dict() if "answer_type" in df.columns else "MISSING")
+print("Safety:", df["safety_category"].value_counts().to_dict())
+print("Missing answers:", df["answer"].isna().sum())
+print("Sources:", df["source"].value_counts().to_dict())
+print("\nSample question:", df["question"].iloc[0][:100])
+print("Sample answer:", str(df["answer"].iloc[0])[:100])
